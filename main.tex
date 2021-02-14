@@ -1,0 +1,42 @@
+\documentclass[12pt]{amsart}
+\usepackage{subfiles}
+\usepackage{enumitem}
+%% \usepackage[backend=biber,style=verbose,sorting=none,maxnames=99]{biblatex}
+\usepackage[backend=biber,style=alphabetic,citestyle=alphabetic,sorting=none,maxnames=99]{biblatex}
+\makeatletter
+%\def\input@path{{../}}
+\makeatother
+\input{preambles/cat_preamble}
+\input{preambles/mathnotes}
+%% For collaborative notes:
+\usepackage{todonotes}
+\setlength{\marginparwidth}{2cm}
+
+\newcommand{\joseph}[1]{
+  \ifmmode
+   \textrm{\todo[author=Joseph,backgroundcolor=green]{#1}}
+  \else
+  \todo[author=Joseph,backgroundcolor=green]{#1}
+  \fi
+}
+
+\newcommand{\tsutomu}[1]{
+  \ifmmode
+   \textrm{\todo[author=Tsutomu,backgroundcolor=orange]{#1}}
+  \else
+  \todo[author=Tsutomu,backgroundcolor=orange]{#1}
+  \fi
+}
+% \addbibresource{../bibs/me.bib}
+\addbibresource{./bibs/topos_refs.bib}
+%% \bibstyle{abbrvnat}
+% \bibliographystyle{abbrvnat}
+
+  \begin{document}
+  \subfile{./Conceptual_Background.tex}
+  \subfile{./Technical_Background.tex}
+  %\subfile{./Results.tex}
+   \nocite{*}
+  \printbibliography
+%% \bibliography{bibs/topos_refs.bib}
+\end{document}
