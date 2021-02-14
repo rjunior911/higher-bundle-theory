@@ -10,21 +10,21 @@
 \input{preambles/mathnotes}
 %% For collaborative notes:
 \usepackage{todonotes}
-\setlength{\marginparwidth}{2cm}
+\setlength{\marginparwidth}{2.5cm}
 
-\newcommand{\joseph}[1]{
+\newcommand{\joseph}[2][]{
   \ifmmode
-   \textrm{\todo[author=Joseph,backgroundcolor=green]{#1}}
+   \textrm{\todo[author=Joseph,backgroundcolor=green,#1]{#2}}
   \else
-  \todo[author=Joseph,backgroundcolor=green]{#1}
+  \todo[author=Joseph,backgroundcolor=green,#1]{#2}
   \fi
 }
 
-\newcommand{\tsutomu}[1]{
+\newcommand{\tsutomu}[2][]{
   \ifmmode
-   \textrm{\todo[author=Tsutomu,backgroundcolor=orange]{#1}}
+   \textrm{\todo[author=Tsutomu,backgroundcolor=orange,#1]{#2}}
   \else
-  \todo[author=Tsutomu,backgroundcolor=orange]{#1}
+  \todo[author=Tsutomu,backgroundcolor=orange,#1]{#2}
   \fi
 }
 % \addbibresource{../bibs/me.bib}
