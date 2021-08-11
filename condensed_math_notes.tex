@@ -1,0 +1,161 @@
+\documentclass[./main.tex]{subfiles}
+\include{mathnotes}
+\include{cat_preamble}
+\include{url}
+
+\begin{document}
+
+\section{Condensed sets}
+
+\begin{remark}
+This section roughly corresponds to \cite[Lecture 1]{scholze1} as well as \cite[Lectures 1-3]{masterclass}. 
+\end{remark}
+
+Condensed sets are an alternate formulation of ``geometric objects'' that are better behaved than topological spaces in some sense. In particular, condensed sets provide a suitable setting for the homological algebra of topological rings and modules. This is desirable because abelian group objects in $\Top$ do not form an abelian category. Consider the following morphism in the category of topological abelian groups
+$$(\RR, \text{ discrete topology}) \rightarrow (\RR, \text{ natural topology})$$
+whose underlying set map is the identity on $\RR$. Its kernel and cokernel are both trivial, yet this is not an isomorphism. In the category of condensed sets, the above morphism (suitable interpreted) has a nontrivial cokernel measuring the difference in topology.
+
+There have already been some attempts to define cohomology of topological algebraic objects. For example, \textit{continuous group cohomology} considers a topological $G$ acting continuously on a topological abelian group, but there was no site-theoretic justification for its definition. 
+
+Roughly, the category of condensed sets is the ($\Set$-valued) sheaf category on a site of profinite sets. This category has two obvious advantanges over $\Top$. First, recall that $\Top$ is not a topos while a sheaf category is (by definition) a Grothendieck topos so intuitionistic logic can be interpreted in it. Second, abelian group objects in a sheaf topos form an abelian category hence we can perform homological algebra. On the other hand, this definition ignores set-theoretic issues and offers no motivation for considering profinite sets. Thus, the goal of this section is to explain these questions in detail. 
+
+Condensed sets will be sheaves on some Grothendieck site whose objects are special topological spaces called \textit{profinite sets}. In order for a sheaf category to be a topos, the site must be essentially small. Thus it is reasonable to put a bound on the cardinality of topological spaces considered. 
+
+\begin{definition}
+A cardinal $\kappa$ is said to be a \textbf{strong limit cardinal} if for all $\lambda < \kappa$, it holds that $2^\lambda < \kappa$. Such cardinals can easily be constructed and in most cases it suffices to consider $\kappa = \beth_\omega$ in the notation of \cite[Remark 1.3]{scholze1}.
+\end{definition}
+
+Most topological spaces in practice are compactly generated, which essentially means that properties about them can be checked on compact Hausdorff subspaces. Hence we begin by considering a site of compact Hausdorff spaces. 
+
+\begin{definition}
+For a cardinal $\kappa$, let $\CHaus_\kappa$ be the full subcategory of $\Top$ spanned by compact Hausdorff spaces $X$ with $|X| < \kappa$. 
+\end{definition}
+
+\begin{definition}\label{covering}
+For $Y \in \CHaus_\kappa$, a set of morphisms $\{f_i : X_i \rar{} Y\}$ in $\CHaus_\kappa$ is a \textbf{covering} of $Y$ if it is a finite set of jointly surjective maps. 
+\end{definition}
+
+It is easy to check that this defines a coverage which generates a Grothendieck topology on $\CHaus_\kappa$. The following shows that this topology is not too strong.
+
+\begin{proposition}[\cite[Proposition 1.7]{scholze1}]
+There is a faithful functor
+$$\Top \rightarrow \Sh(\CHaus_\kappa)$$
+defined by
+$$X \mapsto \Hom_{\Top}(\_,X)$$
+This is fully faithful on the subcategory of $\kappa$-compactly generated spaces. 
+\end{proposition}
+\begin{proof}
+It is obvious that there is such a faithful functor landing in $\Psh(\CHaus_\kappa)$. It remains to argue for each topological space $X$ that $\Hom_{\Top}(\_,X)$ is a sheaf on $\CHaus_\kappa$. Let $\{f_i : Y_i \rar{} Z\}$ be a covering of $Z$ in $\CHaus_\kappa$, and we must check that
+\begin{center}
+\begin{tikzcd}
+\Hom(Z,X) \ar[r] & \prod_i \Hom(Y_i, X) \ar[r, yshift = 0.7ex] \ar[r, yshift = -0.7ex] & \prod_{i,j} \Hom(Y_i \times_Z Y_j, X)
+\end{tikzcd}
+\end{center}
+is an equalizer diagram. Consider an element in the equalizer represented by a collection of maps $g_i : Y_i \rar{} X$. Define a set map $g : Z \rar{} X$ by $g(z) = g_i(y_i)$ for any preimage $y_i \in Y_i$ of $z$ along any $f_i$. This is well-defined by the equalizer condition. To see that $g$ is closed, note for any $C \subseteq X$ that $g^{-1}(C) = \cup_i f_i(g_i^{-1}(C))$. Since the covering family is finite, and a continuous map of compact Hausdorff spaces preserve closed sets, it follows that $g^{-1}(C)$ is closed whenever $C$ is closed. Thus $g$ is continuous. 
+\end{proof}
+
+It turns out that $\CHaus_\kappa$ has ``enough projective objects'' in the following sense. First, a topological space $T$ is said to be \textit{projective} if it satisfies the lifting property
+\begin{center}
+\begin{tikzcd}
+ & X \ar[d, twoheadrightarrow]
+ T \ar[r] \ar[ru, dashed] & Y
+\end{tikzcd}
+\end{center}
+for any surjection $X \twoheadrightarrow Y$. Having \textit{enough} projective object means that for any $X \in \CHaus_\kappa$, there is a projective object $T$ in $\CHaus_\kappa$ and a surjection
+$$T \twoheadrightarrow X$$
+In fact, we can take $T = \beta X$ to be the Stone-\v{C}ech compactification of the set underlying $X$ (this is a slight abuse of notation as $\beta X$ usually refers to the Stone-\v{C}ech compactification of $X$ itself). Formally, the Stone-\v{C}ech compactification is the left adjoint to the forgetful functor $\Top \rightarrow \CHaus$. More explicitly, for a discrete space $X$ its Stone-\v{C}ech compactification can be constructed by putting a topology on the set of ultrafilters on $X$. 
+
+\begin{definition}
+A \textbf{filter} $\mathcal{F}$ on a set $X$ is a family of subsets of $X$ such that
+\begin{itemize}
+\item (Upward closed). If $A \in \mathcal{F}$ and $A \subseteq B$, then $B \in \mathcal{F}$.
+\item ($\cap$-closure). If $A, B \in \mathcal{F}$, then $A \cap B \in \mathcal{F}$. 
+\end{itemize}
+A filter $\mathcal{F}$ is \textbf{proper} if $\mathcal{F} \neq 2^X$. An \textbf{ultrafilter} is a nonempty, proper filter $\mathcal{F}$ such that for all $A \subseteq X$, either $A \in \mathcal{F}$ or $X \setminus A \in \mathcal{F}$. 
+\end{definition}
+
+The topology on the set of all ultrafilters on $X$ is generated by $\{\mathcal{F} \mid U \in \mathcal{F}\}$ for $U \subseteeq X$. Moreover, the set of all ultrafilters has cardinality at most $2^{2^|X|} < \kappa$ assuming that $|X| < \kappa$, so $\beta X$ is an object of $\CHaus_\kappa$. The spaces $\beta X$ admit the following characterization. 
+
+\begin{definition}
+A topological space $Y$ is \textbf{extremally disconnected} if the closure of an open set is also open. Equivalently, $Y$ is extremally disconnected if any surjection $Y' \rar{} Y$ from a compact Hausdorff $Y'$ splits. 
+\end{definition}
+
+Every $\beta X$ is extremally disconnected (and compact Hausdorff), and conversely every extremally disconnected compact Hausdorff space is of the form $\beta X$ for some discrete space $X$. Thus, by definition of the topology on $\CHaus_\kappa$, any sheaf is uniquely determined by its values on extremally disconnected compact Hausdorff spaces. When restricting to such objects, the sheaf condition becomes a lot simpler : 
+
+\begin{lemma}
+$F \in \Psh(\CHaus_\kappa)$ is a sheaf if and only if
+\begin{itemize}
+\item $F(\emptyset) = *$
+\item $F(Y_1 \amalg Y_2) \iso F(Y_1) \times F(Y_2))$ for every extremally disconnected compact Hausdorff spaces $Y_1$ and $Y_2$.
+\end{itemize}
+\end{lemma}
+
+Here are some remarks on extremally disconnected compact Hausdorff spaces. 
+
+\begin{rem}\hfill
+\begin{itemize}
+\item Extremally disconnected compact Hausdorff spaces are not closed under fiber products; they are not closed under products and taking closed subsets. 
+\item Every projective compact Hausdorff space is a retract of some extremally disconnected compact Hausdorff space.
+\item Axiom of Choice may be needed to produce a non-principal ultrafilter, that is, a point of $\beta X$ not contained in $X$. 
+\end{itemize}
+\end{rem}
+
+As we can see, extremally disconnected compact Hausdorff spaces are a bit unwieldy to handle as a site. Examples are hard to explicitly write down, and they are not closed under finite limits. Thus it makes sense to consider objects of $\CHaus_\kappa$ more general than extremally disconnected ones. 
+
+\begin{definition}
+A topological space is \textbf{totally disconnected} if the only connected subsets are the singletons. Such a space is also called a \textbf{profinite set}.
+\end{definition}
+
+As an example, $\beta X$ is a profinite set that can be interpreteed as a profinite completion of $X$. Let $J$ be the diagram category whose objects are surjections $X \rar{} S$ to a finite set $S$, and a morphism between objects is given by a commuting triangle. Then there is a homeomorphism
+$$\beta X \iso \underset{S \in J}{\lim} S$$
+where the limit on the RHS is taken in $\Top$. Note that $J$ is a filtered category, so $\beta X$ is really a ``pro-object'' built out of finite sets. More generally, every extremally disconnected space is a profinite set. Profinite sets are also closed under all limits, in particular fiber products. This allows us to view the subcategory $*_{\kappa-\proet}$ of $\CHaus_\kappa$ spanned by profinite sets, as a site with the topology induced from $\CHaus_\kappa$. 
+
+We now arrive at the main definition. 
+
+\begin{definition}
+The category of $\kappa$-condensed sets is
+$$\Cond = \Sh(*_{\kappa-\proet})$$
+(we suppress denoting the cardinality $\kappa$). 
+\end{definition}
+
+\section{Condensed abelian groups}
+
+\begin{remark}
+This section roughly corresponds to \cite[Leture 2]{scholze1} and \cite[Lectures 4-]{masterclass}
+\end{remark}
+
+Since $\Cond$ is a topos, the category $\Ab(\Cond)$ of abelian group objects in $\Cond$ is an abelian category. Moreover, it satisfies additional axioms that make it further resemble the category $\Ab$ of (classical) abelian groups. Henceforth we call objects of $\Ab(\Cond)$ condensed abelian groups.
+
+\begin{theorem}[\cite[Theorem 1.10]{scholze1}]
+$\Ab(\Cond)$ is an abelian category that satisfy in addition Grothendieck's axioms AB3, AB4, AB5, AB6, AB3$^*$ and AB$4^*$. 
+\end{theorem}
+
+Most abelian categories fail to satisfy AB$4^*$ and AB6. The reason why $\Ab(\Cond)$ satisfy these axioms is because $\Ab(\Cond)$ admits compact projective generators. 
+
+\begin{definition}
+An object $T$ of a category $\C$ is \textbf{$\kappa$-compact} if $\Hom_\C(T,\_)$ commutes with $\kappa$-filtered colimits. An object is compact if it is $\omega$-compact.
+\end{definition}
+
+\begin{lemma}
+If an object $T$ of an abelian category $\mathcal{A}$ is compact projective, then $\Hom_\mathcal{A}(T,\_)$ preserves all limits and colimits. 
+\end{lemma}
+
+\begin{definition}
+An object $T$ of a category $\C$ is a \textbf{generator} if $\Hom_\C(T,\_) : \C \rightarrow \Set$ is faithful. 
+\end{definition}
+
+\begin{example}
+The abelian category $\Mod_R$ of left modules over an associative ring $R$ admits a compact projective generator $R$. 
+\end{example}
+
+\begin{proposition}
+$\Ab(\Cond)$ has enough compact projectives, meaning that every object $M$ admits an epimorphism 
+$$\oplus_i P_i \rar{} M$$
+from some set of compact projectives $\{P_i\}_i$. In particular, the compact projectives can be taken to be $\Z[T]$, where $T$ is a representable corresponding to an extremally disconnected compact Hausdorff space, and $\Z[\_]$ denotes the left adjoint to the forgetful functor
+$$\Cond \rightarrow \Ab(\Cond)$$
+\end{proposition}
+
+\bibliography{/bibs/condensed}
+\bibliographystyle{ieeetr}
+
+\end{document}
